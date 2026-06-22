@@ -351,13 +351,15 @@ const schools = [
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
       { name: "法学部",               category: "法・政治",       hensachi: 63, hasAO: false },
+      { name: "政治経済学部",         category: "法・政治",       hensachi: 64, hasAO: true  },
       { name: "経営学部",             category: "経済・経営・商", hensachi: 63, hasAO: false },
       { name: "文学部",               category: "文・語学・人文", hensachi: 62, hasAO: true  },
       { name: "商学部",               category: "経済・経営・商", hensachi: 63, hasAO: true  },
       { name: "理工学部",             category: "理・工",         hensachi: 60, hasAO: true  },
       { name: "農学部",               category: "農・生命",       hensachi: 59, hasAO: true  },
       { name: "情報コミュニケーション学部", category: "情報",     hensachi: 63, hasAO: false },
-      { name: "国際日本学部",         category: "社会・国際",     hensachi: 64, hasAO: true  }
+      { name: "国際日本学部",         category: "社会・国際",     hensachi: 64, hasAO: true  },
+      { name: "総合数理学部",         category: "情報",           hensachi: 58, hasAO: true  }
     ]
   },
   {
