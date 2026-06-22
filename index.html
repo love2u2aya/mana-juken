@@ -106,6 +106,22 @@
         </div>
       </div>
 
+      <!-- AO入試の選考内容 -->
+      <div class="filter-section">
+        <h3>AO選考内容で絞る</h3>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" name="ao-method" value="小論文"> 小論文あり
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="ao-method" value="学力試験"> 学力試験あり
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="ao-method" value="実技"> 実技あり
+          </label>
+        </div>
+      </div>
+
       <button class="reset-btn" id="reset-btn">条件をすべてリセット</button>
     </aside>
 
@@ -134,6 +150,14 @@
       </div>
 
     </main>
+  </div>
+
+  <!-- Detail Modal -->
+  <div id="detail-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button id="modal-close" class="modal-close" aria-label="閉じる">×</button>
+      <div id="modal-content"></div>
+    </div>
   </div>
 
   <script src="data.js"></script>
