@@ -17,7 +17,6 @@ function getCheckedValues(name) {
 }
 
 function initFilters() {
-  // Difficulty level select
   const levelSelect = document.getElementById('level-select');
   DIFFICULTY_LEVELS.forEach(lv => {
     const opt = document.createElement('option');
@@ -30,7 +29,6 @@ function initFilters() {
     applyFilters();
   });
 
-  // Generate region checkboxes
   const regionContainer = document.getElementById('region-filters');
   REGIONS.forEach(region => {
     const label = document.createElement('label');
@@ -44,11 +42,10 @@ function initFilters() {
       applyFilters();
     });
     label.appendChild(input);
-    label.appendChild(document.createTextNode(' ' + region));
+    label.appendChild(document.createTextNode(' ' + region));
     regionContainer.appendChild(label);
   });
 
-  // Generate faculty category checkboxes
   const catContainer = document.getElementById('faculty-filters');
   FACULTY_CATEGORIES.forEach(cat => {
     const label = document.createElement('label');
@@ -62,11 +59,10 @@ function initFilters() {
       applyFilters();
     });
     label.appendChild(input);
-    label.appendChild(document.createTextNode(' ' + cat));
+    label.appendChild(document.createTextNode(' ' + cat));
     catContainer.appendChild(label);
   });
 
-  // Type checkboxes
   document.querySelectorAll('input[name="type"]').forEach(cb => {
     cb.addEventListener('change', () => {
       filters.types = getCheckedValues('type');
@@ -74,7 +70,6 @@ function initFilters() {
     });
   });
 
-  // Hensachi sliders
   const minSlider = document.getElementById('hensachi-min');
   const maxSlider = document.getElementById('hensachi-max');
   const minLabel  = document.getElementById('hensachi-min-label');
@@ -94,7 +89,6 @@ function initFilters() {
   minSlider.addEventListener('input', syncRange);
   maxSlider.addEventListener('input', syncRange);
 
-  // AO / 推薦
   document.getElementById('filter-math').addEventListener('change', e => {
     filters.noMath = e.target.checked;
     applyFilters();
@@ -120,13 +114,9 @@ function initFilters() {
     applyFilters();
   });
 
-  // Sort
   document.getElementById('sort-select').addEventListener('change', applyFilters);
-
-  // Reset
   document.getElementById('reset-btn').addEventListener('click', resetFilters);
 
-  // Mobile sidebar toggle
   const toggleBtn = document.getElementById('filter-toggle-btn');
   const sidebar   = document.getElementById('sidebar');
   const overlay   = document.getElementById('overlay');
@@ -159,59 +149,66 @@ function resetFilters() {
 }
 
 function applyFilters() {
-  let results = schools.filter(s => {
-    if (filters.types.length      && !filters.types.includes(s.type))                                   return false;
-    if (filters.regions.length    && !filters.regions.includes(s.region))                               return false;
-    if (filters.categories.length && !filters.categories.some(c => s.categories.includes(c)))           return false;
-    if (s.hensachi < filters.hensachiMin || s.hensachi > filters.hensachiMax)                           return false;
-    if (s.groupRank > filters.maxRank)                                                                   return false;
-    if (filters.noMath        && !s.mathOptional)                                                        return false;
-    if (filters.englishStrong && !s.englishEmphasis)                                                     return false;
-    if (filters.hasGeneral && s.hasGeneral === false)                                                    return false;
-    if (filters.hasAO    && !s.hasAO)                                                                    return false;
-    if (filters.hasSuisen && !s.hasRecommendation)                                                       return false;
-    return true;
+  const results = [];
+
+  schools.forEach(school => {
+    if (filters.types.length   && !filters.types.includes(school.type))     return;
+    if (filters.regions.length && !filters.regions.includes(school.region)) return;
+    if (school.groupRank > filters.maxRank)                                  return;
+    if (filters.noMath        && !school.mathOptional)                       return;
+    if (filters.englishStrong && !school.englishEmphasis)                    return;
+    if (filters.hasGeneral    && school.hasGeneral === false)                 return;
+    if (filters.hasAO         && !school.hasAO)                              return;
+    if (filters.hasSuisen     && !school.hasRecommendation)                  return;
+
+    school.faculties.forEach(faculty => {
+      if (faculty.hensachi < filters.hensachiMin || faculty.hensachi > filters.hensachiMax) return;
+      if (filters.categories.length && !filters.categories.includes(faculty.category))       return;
+      results.push({ school, faculty });
+    });
   });
 
   const sortVal = document.getElementById('sort-select').value;
-  if      (sortVal === 'hensachi-desc') results.sort((a, b) => b.hensachi - a.hensachi);
-  else if (sortVal === 'hensachi-asc')  results.sort((a, b) => a.hensachi - b.hensachi);
-  else if (sortVal === 'name')          results.sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+  if      (sortVal === 'hensachi-desc') results.sort((a, b) => b.faculty.hensachi - a.faculty.hensachi);
+  else if (sortVal === 'hensachi-asc')  results.sort((a, b) => a.faculty.hensachi - b.faculty.hensachi);
+  else if (sortVal === 'name')          results.sort((a, b) => a.school.name.localeCompare(b.school.name, 'ja'));
 
-  renderSchools(results);
+  renderFaculties(results);
   updateCount(results.length);
   updateActiveTags();
 }
 
-function renderSchools(results) {
+function renderFaculties(results) {
   const grid = document.getElementById('school-grid');
 
   if (results.length === 0) {
     grid.innerHTML = `
       <div class="empty-state">
-        <p>条件に合う大学が見つかりませんでした</p>
+        <p>条件に合う学部が見つかりませんでした</p>
         <small>絞り込み条件を変えてみてください</small>
       </div>`;
     return;
   }
 
-  grid.innerHTML = results.map(s => {
+  grid.innerHTML = results.map(({ school: s, faculty: f }) => {
     const typeClass = s.type === '国公立' ? 'kokuritu' : 'shiritsu';
     const hasGeneral = s.hasGeneral !== false;
     const admissionBadges = [
-      s.mathOptional    ? '<span class="badge badge-math">数学なしOK</span>' : '',
-      s.englishEmphasis ? '<span class="badge badge-english">英語重視</span>' : '',
-      hasGeneral        ? '<span class="badge badge-general">一般入試</span>' : '',
-      s.hasAO           ? '<span class="badge badge-ao">AO入試</span>' : '',
-      s.hasRecommendation ? '<span class="badge badge-suisen">推薦入試</span>' : ''
+      s.mathOptional      ? '<span class="badge badge-math">数学なしOK</span>'   : '',
+      s.englishEmphasis   ? '<span class="badge badge-english">英語重視</span>'  : '',
+      hasGeneral          ? '<span class="badge badge-general">一般入試</span>'  : '',
+      s.hasAO             ? '<span class="badge badge-ao">AO入試</span>'         : '',
+      s.hasRecommendation ? '<span class="badge badge-suisen">推薦入試</span>'   : ''
     ].filter(Boolean).join('');
-    const noBadge = admissionBadges
-      ? '' : '<span class="badge badge-none">一般入試のみ</span>';
+    const noBadge = admissionBadges ? '' : '<span class="badge badge-none">一般入試のみ</span>';
 
     return `
       <div class="school-card">
         <div class="card-top">
-          <span class="school-name">${escHtml(s.name)}</span>
+          <div class="card-name-group">
+            <span class="faculty-name">${escHtml(f.name)}</span>
+            <span class="university-name">${escHtml(s.name)}</span>
+          </div>
           <span class="type-badge ${typeClass}">${escHtml(s.type)}</span>
         </div>
         <div class="card-meta">
@@ -219,12 +216,12 @@ function renderSchools(results) {
           <span class="group-badge">${escHtml(s.group)}</span>
           <span class="meta-hensachi">
             <span class="meta-hensachi-label">偏差値</span>
-            <span class="meta-hensachi-value">${s.hensachi}</span>
+            <span class="meta-hensachi-value">${f.hensachi}</span>
           </span>
         </div>
         <div class="admission-badges">${admissionBadges || noBadge}</div>
         <div class="card-categories">
-          ${s.categories.map(c => `<span class="cat-tag">${escHtml(c)}</span>`).join('')}
+          <span class="cat-tag">${escHtml(f.category)}</span>
         </div>
       </div>`;
   }).join('');
@@ -232,7 +229,7 @@ function renderSchools(results) {
 
 function updateCount(n) {
   document.getElementById('result-count').innerHTML =
-    `<strong>${n}</strong> 件の大学が見つかりました`;
+    `<strong>${n}</strong> 件の学部が見つかりました`;
 }
 
 function updateActiveTags() {
@@ -250,9 +247,9 @@ function updateActiveTags() {
     tags.push({ label: `偏差値 ${filters.hensachiMin}〜${filters.hensachiMax}`, type: 'hensachi', val: '' });
   if (filters.noMath)        tags.push({ label: '数学なしOK',   type: 'math',    val: '' });
   if (filters.englishStrong) tags.push({ label: '英語重視',     type: 'english', val: '' });
-  if (filters.hasGeneral) tags.push({ label: '一般入試あり', type: 'general', val: '' });
-  if (filters.hasAO)    tags.push({ label: 'AO入試あり',  type: 'ao',     val: '' });
-  if (filters.hasSuisen) tags.push({ label: '推薦入試あり', type: 'suisen', val: '' });
+  if (filters.hasGeneral)    tags.push({ label: '一般入試あり', type: 'general', val: '' });
+  if (filters.hasAO)         tags.push({ label: 'AO入試あり',  type: 'ao',      val: '' });
+  if (filters.hasSuisen)     tags.push({ label: '推薦入試あり', type: 'suisen',  val: '' });
 
   container.innerHTML = '';
   tags.forEach(tag => {
@@ -277,9 +274,6 @@ function removeFilter(type, val) {
     if (el) el.checked = false;
   } else if (type === 'region') {
     filters.regions = filters.regions.filter(v => v !== val);
-    const el = document.querySelector(`input[name="region"][value="${CSS.escape(val)}"]`);
-    if (el) el.checked = false;
-    // fallback for browsers without CSS.escape
     document.querySelectorAll('input[name="region"]').forEach(cb => {
       if (cb.value === val) cb.checked = false;
     });
