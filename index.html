@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>まな受験 - 受験校の絞り込み</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>まな受験</h1>
+      <p>大学・学部を絞り込んで受験校を探そう</p>
+    </div>
+  </header>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="layout">
+
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-title">
+        <span>絞り込み条件</span>
+      </div>
+
+      <!-- 難易度グループ -->
+      <div class="filter-section">
+        <h3>難易度（MARCH以上など）</h3>
+        <select class="level-select" id="level-select" aria-label="難易度（下限）">
+          <!-- JS で生成 -->
+        </select>
+      </div>
+
+      <!-- 大学種別 -->
+      <div class="filter-section">
+        <h3>大学種別</h3>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" name="type" value="国公立"> 国公立大学
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="type" value="私立"> 私立大学
+          </label>
+        </div>
+      </div>
+
+      <!-- 地域 -->
+      <div class="filter-section">
+        <h3>地域</h3>
+        <div class="checkbox-group" id="region-filters">
+          <!-- JS で生成 -->
+        </div>
+      </div>
+
+      <!-- 学部系統 -->
+      <div class="filter-section">
+        <h3>学部系統</h3>
+        <div class="checkbox-group" id="faculty-filters">
+          <!-- JS で生成 -->
+        </div>
+      </div>
+
+      <!-- 偏差値 -->
+      <div class="filter-section">
+        <h3>偏差値</h3>
+        <div class="range-labels">
+          <span id="hensachi-min-label">35</span>
+          <span>〜</span>
+          <span id="hensachi-max-label">80</span>
+        </div>
+        <div class="range-sliders">
+          <input type="range" id="hensachi-min" min="35" max="80" value="35" step="1" aria-label="偏差値 最小">
+          <input type="range" id="hensachi-max" min="35" max="80" value="80" step="1" aria-label="偏差値 最大">
+        </div>
+        <p class="range-note">上：最低値　下：最高値</p>
+      </div>
+
+      <!-- 受験科目 -->
+      <div class="filter-section">
+        <h3>受験科目・得意科目</h3>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="filter-math"> 数学なしで受験できる
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="filter-english"> 英語が得意な人向け（英語重視）
+          </label>
+        </div>
+      </div>
+
+      <!-- 入試方式 -->
+      <div class="filter-section">
+        <h3>入試方式</h3>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="filter-general"> 一般入試あり
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="filter-ao"> AO入試あり
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="filter-suisen"> 推薦入試あり
+          </label>
+        </div>
+      </div>
+
+      <button class="reset-btn" id="reset-btn">条件をすべてリセット</button>
+    </aside>
+
+    <!-- ===== Main ===== -->
+    <main class="main">
+
+      <button class="filter-toggle-btn" id="filter-toggle-btn">
+        &#9776; 絞り込む
+      </button>
+
+      <div class="results-header">
+        <div class="result-count" id="result-count">
+          <strong>0</strong> 件の大学が見つかりました
+        </div>
+        <select class="sort-select" id="sort-select" aria-label="並び替え">
+          <option value="hensachi-desc">偏差値：高い順</option>
+          <option value="hensachi-asc">偏差値：低い順</option>
+          <option value="name">五十音順</option>
+        </select>
+      </div>
+
+      <div class="active-filters" id="active-filters"></div>
+
+      <div class="school-grid" id="school-grid">
+        <!-- JS で描画 -->
+      </div>
+
+    </main>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
