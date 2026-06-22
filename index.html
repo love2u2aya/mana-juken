@@ -25,6 +25,14 @@
         <span>絞り込み条件</span>
       </div>
 
+      <!-- 難易度グループ -->
+      <div class="filter-section">
+        <h3>難易度（MARCH以上など）</h3>
+        <select class="level-select" id="level-select" aria-label="難易度（下限）">
+          <!-- JS で生成 -->
+        </select>
+      </div>
+
       <!-- 大学種別 -->
       <div class="filter-section">
         <h3>大学種別</h3>
@@ -69,10 +77,26 @@
         <p class="range-note">上：最低値　下：最高値</p>
       </div>
 
+      <!-- 受験科目 -->
+      <div class="filter-section">
+        <h3>受験科目・得意科目</h3>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="filter-math"> 数学なしで受験できる
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="filter-english"> 英語が得意な人向け（英語重視）
+          </label>
+        </div>
+      </div>
+
       <!-- 入試方式 -->
       <div class="filter-section">
         <h3>入試方式</h3>
         <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="filter-general"> 一般入試あり
+          </label>
           <label class="checkbox-label">
             <input type="checkbox" id="filter-ao"> AO入試あり
           </label>

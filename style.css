@@ -117,6 +117,24 @@ header p  { font-size: 12px; opacity: 0.75; }
   flex-shrink: 0;
 }
 
+/* Level select */
+.level-select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.level-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
 /* Hensachi range */
 .range-labels {
   display: flex;
@@ -299,6 +317,17 @@ input[type="range"] {
   color: var(--badge-shiritsu);
 }
 
+.group-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #475569;
+  white-space: nowrap;
+}
+
 .card-meta {
   display: flex;
   align-items: center;
@@ -336,9 +365,12 @@ input[type="range"] {
   font-weight: 700;
 }
 
+.badge-general { background: #e0e7ff; color: #4338ca; }
 .badge-ao    { background: var(--badge-ao-bg);    color: var(--badge-ao); }
 .badge-suisen { background: var(--badge-suisen-bg); color: var(--badge-suisen); }
 .badge-none  { background: #f3f4f6; color: var(--text-light); }
+.badge-math    { background: #fce7f3; color: #be185d; }
+.badge-english { background: #e0f2fe; color: #0369a1; }
 
 .card-categories {
   display: flex;

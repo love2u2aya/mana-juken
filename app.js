@@ -4,6 +4,10 @@ const filters = {
   categories: [],
   hensachiMin: 35,
   hensachiMax: 80,
+  maxRank: 99,
+  noMath: false,
+  englishStrong: false,
+  hasGeneral: false,
   hasAO: false,
   hasSuisen: false
 };
@@ -13,6 +17,19 @@ function getCheckedValues(name) {
 }
 
 function initFilters() {
+  // Difficulty level select
+  const levelSelect = document.getElementById('level-select');
+  DIFFICULTY_LEVELS.forEach(lv => {
+    const opt = document.createElement('option');
+    opt.value = lv.value;
+    opt.textContent = lv.label;
+    levelSelect.appendChild(opt);
+  });
+  levelSelect.addEventListener('change', e => {
+    filters.maxRank = parseInt(e.target.value);
+    applyFilters();
+  });
+
   // Generate region checkboxes
   const regionContainer = document.getElementById('region-filters');
   REGIONS.forEach(region => {
@@ -78,6 +95,21 @@ function initFilters() {
   maxSlider.addEventListener('input', syncRange);
 
   // AO / 推薦
+  document.getElementById('filter-math').addEventListener('change', e => {
+    filters.noMath = e.target.checked;
+    applyFilters();
+  });
+
+  document.getElementById('filter-english').addEventListener('change', e => {
+    filters.englishStrong = e.target.checked;
+    applyFilters();
+  });
+
+  document.getElementById('filter-general').addEventListener('change', e => {
+    filters.hasGeneral = e.target.checked;
+    applyFilters();
+  });
+
   document.getElementById('filter-ao').addEventListener('change', e => {
     filters.hasAO = e.target.checked;
     applyFilters();
@@ -114,9 +146,11 @@ function resetFilters() {
   Object.assign(filters, {
     types: [], regions: [], categories: [],
     hensachiMin: 35, hensachiMax: 80,
-    hasAO: false, hasSuisen: false
+    maxRank: 99, noMath: false, englishStrong: false,
+    hasGeneral: false, hasAO: false, hasSuisen: false
   });
   document.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = false; });
+  document.getElementById('level-select').value = 99;
   document.getElementById('hensachi-min').value = 35;
   document.getElementById('hensachi-max').value = 80;
   document.getElementById('hensachi-min-label').textContent = '35';
@@ -130,6 +164,10 @@ function applyFilters() {
     if (filters.regions.length    && !filters.regions.includes(s.region))                               return false;
     if (filters.categories.length && !filters.categories.some(c => s.categories.includes(c)))           return false;
     if (s.hensachi < filters.hensachiMin || s.hensachi > filters.hensachiMax)                           return false;
+    if (s.groupRank > filters.maxRank)                                                                   return false;
+    if (filters.noMath        && !s.mathOptional)                                                        return false;
+    if (filters.englishStrong && !s.englishEmphasis)                                                     return false;
+    if (filters.hasGeneral && s.hasGeneral === false)                                                    return false;
     if (filters.hasAO    && !s.hasAO)                                                                    return false;
     if (filters.hasSuisen && !s.hasRecommendation)                                                       return false;
     return true;
@@ -159,12 +197,16 @@ function renderSchools(results) {
 
   grid.innerHTML = results.map(s => {
     const typeClass = s.type === '国公立' ? 'kokuritu' : 'shiritsu';
+    const hasGeneral = s.hasGeneral !== false;
     const admissionBadges = [
-      s.hasAO          ? '<span class="badge badge-ao">AO入試</span>' : '',
+      s.mathOptional    ? '<span class="badge badge-math">数学なしOK</span>' : '',
+      s.englishEmphasis ? '<span class="badge badge-english">英語重視</span>' : '',
+      hasGeneral        ? '<span class="badge badge-general">一般入試</span>' : '',
+      s.hasAO           ? '<span class="badge badge-ao">AO入試</span>' : '',
       s.hasRecommendation ? '<span class="badge badge-suisen">推薦入試</span>' : ''
     ].filter(Boolean).join('');
-    const noBadge = (!s.hasAO && !s.hasRecommendation)
-      ? '<span class="badge badge-none">一般入試のみ</span>' : '';
+    const noBadge = admissionBadges
+      ? '' : '<span class="badge badge-none">一般入試のみ</span>';
 
     return `
       <div class="school-card">
@@ -174,6 +216,7 @@ function renderSchools(results) {
         </div>
         <div class="card-meta">
           <span class="meta-location">${escHtml(s.prefecture)}（${escHtml(s.region)}）</span>
+          <span class="group-badge">${escHtml(s.group)}</span>
           <span class="meta-hensachi">
             <span class="meta-hensachi-label">偏差値</span>
             <span class="meta-hensachi-value">${s.hensachi}</span>
@@ -199,8 +242,15 @@ function updateActiveTags() {
   filters.types.forEach(v      => tags.push({ label: v,             type: 'type',     val: v }));
   filters.regions.forEach(v    => tags.push({ label: v,             type: 'region',   val: v }));
   filters.categories.forEach(v => tags.push({ label: v,             type: 'category', val: v }));
+  if (filters.maxRank < 99) {
+    const lv = DIFFICULTY_LEVELS.find(l => l.value === filters.maxRank);
+    if (lv) tags.push({ label: lv.label, type: 'level', val: '' });
+  }
   if (filters.hensachiMin > 35 || filters.hensachiMax < 80)
     tags.push({ label: `偏差値 ${filters.hensachiMin}〜${filters.hensachiMax}`, type: 'hensachi', val: '' });
+  if (filters.noMath)        tags.push({ label: '数学なしOK',   type: 'math',    val: '' });
+  if (filters.englishStrong) tags.push({ label: '英語重視',     type: 'english', val: '' });
+  if (filters.hasGeneral) tags.push({ label: '一般入試あり', type: 'general', val: '' });
   if (filters.hasAO)    tags.push({ label: 'AO入試あり',  type: 'ao',     val: '' });
   if (filters.hasSuisen) tags.push({ label: '推薦入試あり', type: 'suisen', val: '' });
 
@@ -238,12 +288,24 @@ function removeFilter(type, val) {
     document.querySelectorAll('input[name="category"]').forEach(cb => {
       if (cb.value === val) cb.checked = false;
     });
+  } else if (type === 'level') {
+    filters.maxRank = 99;
+    document.getElementById('level-select').value = 99;
   } else if (type === 'hensachi') {
     filters.hensachiMin = 35; filters.hensachiMax = 80;
     document.getElementById('hensachi-min').value = 35;
     document.getElementById('hensachi-max').value = 80;
     document.getElementById('hensachi-min-label').textContent = '35';
     document.getElementById('hensachi-max-label').textContent = '80';
+  } else if (type === 'math') {
+    filters.noMath = false;
+    document.getElementById('filter-math').checked = false;
+  } else if (type === 'english') {
+    filters.englishStrong = false;
+    document.getElementById('filter-english').checked = false;
+  } else if (type === 'general') {
+    filters.hasGeneral = false;
+    document.getElementById('filter-general').checked = false;
   } else if (type === 'ao') {
     filters.hasAO = false;
     document.getElementById('filter-ao').checked = false;
