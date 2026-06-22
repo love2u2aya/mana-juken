@@ -383,13 +383,18 @@ const schools = [
     groupRank: 3, group: "GMARCH",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "法学部",               category: "法・政治",       hensachi: 62, hasAO: true  },
-      { name: "経営学部",             category: "経済・経営・商", hensachi: 65, hasAO: true  },
-      { name: "文学部",               category: "文・語学・人文", hensachi: 62, hasAO: true  },
-      { name: "異文化コミュニケーション学部", category: "社会・国際", hensachi: 67, hasAO: true },
-      { name: "理学部",               category: "理・工",         hensachi: 58, hasAO: true  },
-      { name: "社会学部",             category: "社会・国際",     hensachi: 63, hasAO: true  },
-      { name: "教育学部",             category: "教育",           hensachi: 61, hasAO: false }
+      { name: "法学部",                     category: "法・政治",       hensachi: 62, hasAO: true },
+      { name: "経済学部",                   category: "経済・経営・商", hensachi: 62, hasAO: true },
+      { name: "経営学部",                   category: "経済・経営・商", hensachi: 65, hasAO: true },
+      { name: "文学部",                     category: "文・語学・人文", hensachi: 62, hasAO: true },
+      { name: "異文化コミュニケーション学部", category: "社会・国際",   hensachi: 67, hasAO: true },
+      { name: "理学部",                     category: "理・工",         hensachi: 58, hasAO: true },
+      { name: "社会学部",                   category: "社会・国際",     hensachi: 63, hasAO: true },
+      { name: "観光学部",                   category: "社会・国際",     hensachi: 62, hasAO: true },
+      { name: "コミュニティ福祉学部",       category: "社会・国際",     hensachi: 59, hasAO: true },
+      { name: "現代心理学部",               category: "社会・国際",     hensachi: 62, hasAO: true },
+      { name: "スポーツウエルネス学部",     category: "教育",           hensachi: 57, hasAO: true },
+      { name: "環境学部",                   category: "農・生命",       hensachi: 57, hasAO: true }
     ]
   },
   {
