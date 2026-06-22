@@ -158,13 +158,14 @@ function applyFilters() {
     if (filters.noMath        && !school.mathOptional)                       return;
     if (filters.englishStrong && !school.englishEmphasis)                    return;
     if (filters.hasGeneral    && school.hasGeneral === false)                 return;
-    if (filters.hasAO         && !school.hasAO)                              return;
     if (filters.hasSuisen     && !school.hasRecommendation)                  return;
 
     school.faculties.forEach(faculty => {
       if (faculty.hensachi < filters.hensachiMin || faculty.hensachi > filters.hensachiMax) return;
       if (filters.categories.length && !filters.categories.includes(faculty.category))       return;
-      results.push({ school, faculty });
+      const facultyHasAO = faculty.hasAO !== undefined ? faculty.hasAO : school.hasAO;
+      if (filters.hasAO && !facultyHasAO) return;
+      results.push({ school, faculty, facultyHasAO });
     });
   });
 
@@ -190,14 +191,14 @@ function renderFaculties(results) {
     return;
   }
 
-  grid.innerHTML = results.map(({ school: s, faculty: f }) => {
+  grid.innerHTML = results.map(({ school: s, faculty: f, facultyHasAO }) => {
     const typeClass = s.type === '国公立' ? 'kokuritu' : 'shiritsu';
     const hasGeneral = s.hasGeneral !== false;
     const admissionBadges = [
       s.mathOptional      ? '<span class="badge badge-math">数学なしOK</span>'   : '',
       s.englishEmphasis   ? '<span class="badge badge-english">英語重視</span>'  : '',
       hasGeneral          ? '<span class="badge badge-general">一般入試</span>'  : '',
-      s.hasAO             ? '<span class="badge badge-ao">AO入試</span>'         : '',
+      facultyHasAO        ? '<span class="badge badge-ao">AO入試</span>'         : '',
       s.hasRecommendation ? '<span class="badge badge-suisen">推薦入試</span>'   : ''
     ].filter(Boolean).join('');
     const noBadge = admissionBadges ? '' : '<span class="badge badge-none">一般入試のみ</span>';

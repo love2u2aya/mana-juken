@@ -21,6 +21,7 @@ const DIFFICULTY_LEVELS = [
   { value: 1,  label: "最難関のみ（旧帝・早慶クラス）" }
 ];
 
+// hasAO at faculty level: true=総合型選抜あり、false=なし、省略=school.hasAO継承
 const schools = [
   // ========== 国公立大学 ==========
   {
@@ -181,13 +182,13 @@ const schools = [
     groupRank: 2, group: "難関国公立",
     hasAO: true, hasRecommendation: true, mathOptional: false, englishEmphasis: true,
     faculties: [
-      { name: "社会・国際学群",   category: "社会・国際",     hensachi: 61 },
-      { name: "人文・文化学群",   category: "文・語学・人文", hensachi: 60 },
-      { name: "医学群",           category: "医・薬・歯・看護", hensachi: 67 },
-      { name: "理工学群",         category: "理・工",         hensachi: 60 },
-      { name: "生命環境学群",     category: "農・生命",       hensachi: 58 },
-      { name: "教育学群",         category: "教育",           hensachi: 59 },
-      { name: "芸術専門学群",     category: "芸術・デザイン", hensachi: 60 }
+      { name: "社会・国際学群", category: "社会・国際",     hensachi: 61 },
+      { name: "人文・文化学群", category: "文・語学・人文", hensachi: 60 },
+      { name: "医学群",         category: "医・薬・歯・看護", hensachi: 67 },
+      { name: "理工学群",       category: "理・工",         hensachi: 60 },
+      { name: "生命環境学群",   category: "農・生命",       hensachi: 58 },
+      { name: "教育学群",       category: "教育",           hensachi: 59 },
+      { name: "芸術専門学群",   category: "芸術・デザイン", hensachi: 60 }
     ]
   },
   {
@@ -285,12 +286,12 @@ const schools = [
     groupRank: 3, group: "中堅国公立",
     hasAO: true, hasRecommendation: true, mathOptional: false, englishEmphasis: true,
     faculties: [
-      { name: "法学部",       category: "法・政治",       hensachi: 58 },
-      { name: "経済経営学部", category: "経済・経営・商", hensachi: 58 },
-      { name: "人文社会学部", category: "文・語学・人文", hensachi: 57 },
-      { name: "都市環境学部", category: "理・工",         hensachi: 57 },
-      { name: "理学部",       category: "理・工",         hensachi: 57 },
-      { name: "健康福祉学部", category: "医・薬・歯・看護", hensachi: 58 }
+      { name: "法学部",       category: "法・政治",       hensachi: 58, hasAO: false },
+      { name: "経済経営学部", category: "経済・経営・商", hensachi: 58, hasAO: false },
+      { name: "人文社会学部", category: "文・語学・人文", hensachi: 57, hasAO: false },
+      { name: "都市環境学部", category: "理・工",         hensachi: 57, hasAO: true  },
+      { name: "理学部",       category: "理・工",         hensachi: 57, hasAO: true  },
+      { name: "健康福祉学部", category: "医・薬・歯・看護", hensachi: 58, hasAO: false }
     ]
   },
 
@@ -299,15 +300,15 @@ const schools = [
     id: 19, name: "慶應義塾大学", type: "私立",
     prefecture: "東京都", region: "関東",
     groupRank: 1, group: "早慶",
-    hasAO: false, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
+    hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "法学部",       category: "法・政治",       hensachi: 70 },
-      { name: "経済学部",     category: "経済・経営・商", hensachi: 70 },
-      { name: "文学部",       category: "文・語学・人文", hensachi: 66 },
-      { name: "商学部",       category: "経済・経営・商", hensachi: 68 },
-      { name: "理工学部",     category: "理・工",         hensachi: 67 },
-      { name: "医学部",       category: "医・薬・歯・看護", hensachi: 73 },
-      { name: "総合政策学部", category: "社会・国際",     hensachi: 70 }
+      { name: "法学部",       category: "法・政治",       hensachi: 70, hasAO: true  },
+      { name: "経済学部",     category: "経済・経営・商", hensachi: 70, hasAO: false },
+      { name: "文学部",       category: "文・語学・人文", hensachi: 66, hasAO: true  },
+      { name: "商学部",       category: "経済・経営・商", hensachi: 68, hasAO: false },
+      { name: "理工学部",     category: "理・工",         hensachi: 67, hasAO: true  },
+      { name: "医学部",       category: "医・薬・歯・看護", hensachi: 73, hasAO: false },
+      { name: "総合政策学部", category: "社会・国際",     hensachi: 70, hasAO: true  }
     ]
   },
   {
@@ -316,14 +317,14 @@ const schools = [
     groupRank: 1, group: "早慶",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "法学部",         category: "法・政治",       hensachi: 68 },
-      { name: "政治経済学部",   category: "法・政治",       hensachi: 70 },
-      { name: "文学部",         category: "文・語学・人文", hensachi: 65 },
-      { name: "文化構想学部",   category: "文・語学・人文", hensachi: 66 },
-      { name: "商学部",         category: "経済・経営・商", hensachi: 67 },
-      { name: "理工学部",       category: "理・工",         hensachi: 66 },
-      { name: "国際教養学部",   category: "社会・国際",     hensachi: 69 },
-      { name: "教育学部",       category: "教育",           hensachi: 63 }
+      { name: "法学部",       category: "法・政治",       hensachi: 68, hasAO: true  },
+      { name: "政治経済学部", category: "法・政治",       hensachi: 70, hasAO: false },
+      { name: "文学部",       category: "文・語学・人文", hensachi: 65, hasAO: true  },
+      { name: "文化構想学部", category: "文・語学・人文", hensachi: 66, hasAO: true  },
+      { name: "商学部",       category: "経済・経営・商", hensachi: 67, hasAO: false },
+      { name: "理工学部",     category: "理・工",         hensachi: 66, hasAO: true  },
+      { name: "国際教養学部", category: "社会・国際",     hensachi: 69, hasAO: true  },
+      { name: "教育学部",     category: "教育",           hensachi: 63, hasAO: true  }
     ]
   },
   {
@@ -332,13 +333,13 @@ const schools = [
     groupRank: 2, group: "上理ICU",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "法学部",           category: "法・政治",       hensachi: 66 },
-      { name: "経済学部",         category: "経済・経営・商", hensachi: 64 },
-      { name: "文学部",           category: "文・語学・人文", hensachi: 64 },
-      { name: "外国語学部",       category: "文・語学・人文", hensachi: 66 },
-      { name: "理工学部",         category: "理・工",         hensachi: 62 },
-      { name: "総合グローバル学部", category: "社会・国際",   hensachi: 67 },
-      { name: "看護学部",         category: "医・薬・歯・看護", hensachi: 60 }
+      { name: "法学部",             category: "法・政治",       hensachi: 66 },
+      { name: "経済学部",           category: "経済・経営・商", hensachi: 64 },
+      { name: "文学部",             category: "文・語学・人文", hensachi: 64 },
+      { name: "外国語学部",         category: "文・語学・人文", hensachi: 66 },
+      { name: "理工学部",           category: "理・工",         hensachi: 62 },
+      { name: "総合グローバル学部", category: "社会・国際",     hensachi: 67 },
+      { name: "看護学部",           category: "医・薬・歯・看護", hensachi: 60 }
     ]
   },
 
@@ -349,14 +350,14 @@ const schools = [
     groupRank: 3, group: "GMARCH",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
-      { name: "法学部",               category: "法・政治",       hensachi: 63 },
-      { name: "経営学部",             category: "経済・経営・商", hensachi: 63 },
-      { name: "文学部",               category: "文・語学・人文", hensachi: 62 },
-      { name: "商学部",               category: "経済・経営・商", hensachi: 63 },
-      { name: "理工学部",             category: "理・工",         hensachi: 60 },
-      { name: "農学部",               category: "農・生命",       hensachi: 59 },
-      { name: "情報コミュニケーション学部", category: "情報",     hensachi: 63 },
-      { name: "国際日本学部",         category: "社会・国際",     hensachi: 64 }
+      { name: "法学部",               category: "法・政治",       hensachi: 63, hasAO: false },
+      { name: "経営学部",             category: "経済・経営・商", hensachi: 63, hasAO: false },
+      { name: "文学部",               category: "文・語学・人文", hensachi: 62, hasAO: true  },
+      { name: "商学部",               category: "経済・経営・商", hensachi: 63, hasAO: true  },
+      { name: "理工学部",             category: "理・工",         hensachi: 60, hasAO: true  },
+      { name: "農学部",               category: "農・生命",       hensachi: 59, hasAO: true  },
+      { name: "情報コミュニケーション学部", category: "情報",     hensachi: 63, hasAO: false },
+      { name: "国際日本学部",         category: "社会・国際",     hensachi: 64, hasAO: true  }
     ]
   },
   {
@@ -365,13 +366,13 @@ const schools = [
     groupRank: 3, group: "GMARCH",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "法学部",           category: "法・政治",       hensachi: 62 },
-      { name: "経営学部",         category: "経済・経営・商", hensachi: 63 },
-      { name: "文学部",           category: "文・語学・人文", hensachi: 62 },
-      { name: "国際政治経済学部", category: "社会・国際",     hensachi: 65 },
-      { name: "理工学部",         category: "理・工",         hensachi: 59 },
-      { name: "地球社会共生学部", category: "社会・国際",     hensachi: 62 },
-      { name: "情報テクノロジー学部", category: "情報",       hensachi: 60 }
+      { name: "法学部",           category: "法・政治",       hensachi: 62, hasAO: true  },
+      { name: "経営学部",         category: "経済・経営・商", hensachi: 63, hasAO: true  },
+      { name: "文学部",           category: "文・語学・人文", hensachi: 62, hasAO: true  },
+      { name: "国際政治経済学部", category: "社会・国際",     hensachi: 65, hasAO: true  },
+      { name: "理工学部",         category: "理・工",         hensachi: 59, hasAO: true  },
+      { name: "地球社会共生学部", category: "社会・国際",     hensachi: 62, hasAO: true  },
+      { name: "情報テクノロジー学部", category: "情報",       hensachi: 60, hasAO: false }
     ]
   },
   {
@@ -380,13 +381,13 @@ const schools = [
     groupRank: 3, group: "GMARCH",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "法学部",               category: "法・政治",       hensachi: 62 },
-      { name: "経営学部",             category: "経済・経営・商", hensachi: 65 },
-      { name: "文学部",               category: "文・語学・人文", hensachi: 62 },
-      { name: "異文化コミュニケーション学部", category: "社会・国際", hensachi: 67 },
-      { name: "理学部",               category: "理・工",         hensachi: 58 },
-      { name: "社会学部",             category: "社会・国際",     hensachi: 63 },
-      { name: "教育学部",             category: "教育",           hensachi: 61 }
+      { name: "法学部",               category: "法・政治",       hensachi: 62, hasAO: true  },
+      { name: "経営学部",             category: "経済・経営・商", hensachi: 65, hasAO: true  },
+      { name: "文学部",               category: "文・語学・人文", hensachi: 62, hasAO: true  },
+      { name: "異文化コミュニケーション学部", category: "社会・国際", hensachi: 67, hasAO: true },
+      { name: "理学部",               category: "理・工",         hensachi: 58, hasAO: true  },
+      { name: "社会学部",             category: "社会・国際",     hensachi: 63, hasAO: true  },
+      { name: "教育学部",             category: "教育",           hensachi: 61, hasAO: false }
     ]
   },
   {
@@ -395,13 +396,13 @@ const schools = [
     groupRank: 3, group: "GMARCH",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
-      { name: "法学部",       category: "法・政治",       hensachi: 64 },
-      { name: "経済学部",     category: "経済・経営・商", hensachi: 61 },
-      { name: "文学部",       category: "文・語学・人文", hensachi: 61 },
-      { name: "商学部",       category: "経済・経営・商", hensachi: 61 },
-      { name: "理工学部",     category: "理・工",         hensachi: 59 },
-      { name: "国際情報学部", category: "情報",           hensachi: 62 },
-      { name: "国際経営学部", category: "経済・経営・商", hensachi: 62 }
+      { name: "法学部",       category: "法・政治",       hensachi: 64, hasAO: true  },
+      { name: "経済学部",     category: "経済・経営・商", hensachi: 61, hasAO: true  },
+      { name: "文学部",       category: "文・語学・人文", hensachi: 61, hasAO: true  },
+      { name: "商学部",       category: "経済・経営・商", hensachi: 61, hasAO: true  },
+      { name: "理工学部",     category: "理・工",         hensachi: 59, hasAO: true  },
+      { name: "国際情報学部", category: "情報",           hensachi: 62, hasAO: false },
+      { name: "国際経営学部", category: "経済・経営・商", hensachi: 62, hasAO: false }
     ]
   },
   {
@@ -410,13 +411,13 @@ const schools = [
     groupRank: 3, group: "GMARCH",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
-      { name: "法学部",       category: "法・政治",       hensachi: 61 },
-      { name: "経営学部",     category: "経済・経営・商", hensachi: 61 },
-      { name: "文学部",       category: "文・語学・人文", hensachi: 60 },
-      { name: "社会学部",     category: "社会・国際",     hensachi: 61 },
-      { name: "理工学部",     category: "理・工",         hensachi: 57 },
-      { name: "情報科学部",   category: "情報",           hensachi: 59 },
-      { name: "国際文化学部", category: "社会・国際",     hensachi: 62 }
+      { name: "法学部",       category: "法・政治",       hensachi: 61, hasAO: true },
+      { name: "経営学部",     category: "経済・経営・商", hensachi: 61, hasAO: true },
+      { name: "文学部",       category: "文・語学・人文", hensachi: 60, hasAO: true },
+      { name: "社会学部",     category: "社会・国際",     hensachi: 61, hasAO: true },
+      { name: "理工学部",     category: "理・工",         hensachi: 57, hasAO: true },
+      { name: "情報科学部",   category: "情報",           hensachi: 59, hasAO: true },
+      { name: "国際文化学部", category: "社会・国際",     hensachi: 62, hasAO: true }
     ]
   },
 
@@ -491,34 +492,34 @@ const schools = [
     groupRank: 2, group: "上理ICU",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "教養学部（社会科学科）", category: "社会・国際",     hensachi: 67 },
-      { name: "教養学部（人文科学科）", category: "文・語学・人文", hensachi: 65 }
+      { name: "教養学部（社会科学科）", category: "社会・国際",     hensachi: 67, hasAO: true },
+      { name: "教養学部（人文科学科）", category: "文・語学・人文", hensachi: 65, hasAO: true }
     ]
   },
   {
     id: 32, name: "学習院大学", type: "私立",
     prefecture: "東京都", region: "関東",
     groupRank: 4, group: "成成明学・中堅私大",
-    hasAO: false, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
+    hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
-      { name: "法学部",         category: "法・政治",       hensachi: 60 },
-      { name: "経済学部",       category: "経済・経営・商", hensachi: 60 },
-      { name: "文学部",         category: "文・語学・人文", hensachi: 59 },
-      { name: "理学部",         category: "理・工",         hensachi: 57 },
-      { name: "国際社会科学部", category: "社会・国際",     hensachi: 60 }
+      { name: "法学部",         category: "法・政治",       hensachi: 60, hasAO: false },
+      { name: "経済学部",       category: "経済・経営・商", hensachi: 60, hasAO: false },
+      { name: "文学部",         category: "文・語学・人文", hensachi: 59, hasAO: false },
+      { name: "理学部",         category: "理・工",         hensachi: 57, hasAO: false },
+      { name: "国際社会科学部", category: "社会・国際",     hensachi: 60, hasAO: true  }
     ]
   },
   {
     id: 33, name: "東京理科大学", type: "私立",
     prefecture: "東京都", region: "関東",
     groupRank: 2, group: "上理ICU",
-    hasAO: false, hasRecommendation: true, mathOptional: false, englishEmphasis: false,
+    hasAO: true, hasRecommendation: true, mathOptional: false, englishEmphasis: false,
     faculties: [
-      { name: "理学部",   category: "理・工",         hensachi: 63 },
-      { name: "工学部",   category: "理・工",         hensachi: 62 },
-      { name: "薬学部",   category: "医・薬・歯・看護", hensachi: 61 },
-      { name: "経営学部", category: "経済・経営・商", hensachi: 60 },
-      { name: "情報学部", category: "情報",           hensachi: 62 }
+      { name: "理学部",   category: "理・工",         hensachi: 63, hasAO: true },
+      { name: "工学部",   category: "理・工",         hensachi: 62, hasAO: true },
+      { name: "薬学部",   category: "医・薬・歯・看護", hensachi: 61, hasAO: true },
+      { name: "経営学部", category: "経済・経営・商", hensachi: 60, hasAO: true },
+      { name: "情報学部", category: "情報",           hensachi: 62, hasAO: true }
     ]
   },
   {
@@ -543,13 +544,13 @@ const schools = [
     groupRank: 5, group: "日東駒専",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
-      { name: "法学部",         category: "法・政治",       hensachi: 51 },
-      { name: "経済学部",       category: "経済・経営・商", hensachi: 50 },
-      { name: "文理学部（文系）", category: "文・語学・人文", hensachi: 50 },
-      { name: "理工学部",       category: "理・工",         hensachi: 49 },
-      { name: "農学部",         category: "農・生命",       hensachi: 49 },
-      { name: "医学部",         category: "医・薬・歯・看護", hensachi: 61 },
-      { name: "芸術学部",       category: "芸術・デザイン", hensachi: 49 }
+      { name: "法学部",           category: "法・政治",       hensachi: 51, hasAO: true  },
+      { name: "経済学部",         category: "経済・経営・商", hensachi: 50, hasAO: true  },
+      { name: "文理学部（文系）", category: "文・語学・人文", hensachi: 50, hasAO: true  },
+      { name: "理工学部",         category: "理・工",         hensachi: 49, hasAO: true  },
+      { name: "農学部",           category: "農・生命",       hensachi: 49, hasAO: true  },
+      { name: "医学部",           category: "医・薬・歯・看護", hensachi: 61, hasAO: false },
+      { name: "芸術学部",         category: "芸術・デザイン", hensachi: 49, hasAO: true  }
     ]
   },
   {
@@ -558,12 +559,12 @@ const schools = [
     groupRank: 5, group: "日東駒専",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
-      { name: "法学部",       category: "法・政治",       hensachi: 55 },
-      { name: "経営学部",     category: "経済・経営・商", hensachi: 56 },
-      { name: "文学部",       category: "文・語学・人文", hensachi: 55 },
-      { name: "社会学部",     category: "社会・国際",     hensachi: 55 },
-      { name: "理工学部",     category: "理・工",         hensachi: 52 },
-      { name: "情報連携学部", category: "情報",           hensachi: 54 }
+      { name: "法学部",       category: "法・政治",       hensachi: 55, hasAO: true },
+      { name: "経営学部",     category: "経済・経営・商", hensachi: 56, hasAO: true },
+      { name: "文学部",       category: "文・語学・人文", hensachi: 55, hasAO: true },
+      { name: "社会学部",     category: "社会・国際",     hensachi: 55, hasAO: true },
+      { name: "理工学部",     category: "理・工",         hensachi: 52, hasAO: true },
+      { name: "情報連携学部", category: "情報",           hensachi: 54, hasAO: true }
     ]
   },
   {
@@ -572,11 +573,11 @@ const schools = [
     groupRank: 5, group: "日東駒専",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
-      { name: "法学部",             category: "法・政治",       hensachi: 53 },
-      { name: "経済学部",           category: "経済・経営・商", hensachi: 52 },
-      { name: "文学部",             category: "文・語学・人文", hensachi: 52 },
-      { name: "経営学部",           category: "経済・経営・商", hensachi: 52 },
-      { name: "ネットワーク情報学部", category: "情報",         hensachi: 52 }
+      { name: "法学部",             category: "法・政治",       hensachi: 53, hasAO: false },
+      { name: "経済学部",           category: "経済・経営・商", hensachi: 52, hasAO: true  },
+      { name: "文学部",             category: "文・語学・人文", hensachi: 52, hasAO: false },
+      { name: "経営学部",           category: "経済・経営・商", hensachi: 52, hasAO: true  },
+      { name: "ネットワーク情報学部", category: "情報",         hensachi: 52, hasAO: true  }
     ]
   },
   {
@@ -585,10 +586,10 @@ const schools = [
     groupRank: 4, group: "中堅私大",
     hasAO: true, hasRecommendation: true, mathOptional: false, englishEmphasis: false,
     faculties: [
-      { name: "工学部",         category: "理・工",         hensachi: 56 },
-      { name: "システム理工学部", category: "理・工",       hensachi: 55 },
-      { name: "デザイン工学部", category: "芸術・デザイン", hensachi: 55 },
-      { name: "情報工学部",     category: "情報",           hensachi: 56 }
+      { name: "工学部",         category: "理・工",         hensachi: 56, hasAO: true  },
+      { name: "システム理工学部", category: "理・工",       hensachi: 55, hasAO: true  },
+      { name: "デザイン工学部", category: "芸術・デザイン", hensachi: 55, hasAO: true  },
+      { name: "情報工学部",     category: "情報",           hensachi: 56, hasAO: false }
     ]
   },
   {
@@ -597,21 +598,21 @@ const schools = [
     groupRank: 5, group: "中堅私大",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
-      { name: "農学部",   category: "農・生命", hensachi: 51 },
-      { name: "生命科学部", category: "農・生命", hensachi: 49 }
+      { name: "農学部",   category: "農・生命", hensachi: 51, hasAO: true },
+      { name: "生命科学部", category: "農・生命", hensachi: 49, hasAO: true }
     ]
   },
   {
     id: 40, name: "成蹊大学", type: "私立",
     prefecture: "東京都", region: "関東",
     groupRank: 4, group: "成成明学・中堅私大",
-    hasAO: false, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
+    hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
-      { name: "法学部",   category: "法・政治",       hensachi: 57 },
-      { name: "経済学部", category: "経済・経営・商", hensachi: 57 },
-      { name: "文学部",   category: "文・語学・人文", hensachi: 56 },
-      { name: "理工学部", category: "理・工",         hensachi: 54 },
-      { name: "情報学部", category: "情報",           hensachi: 55 }
+      { name: "法学部",   category: "法・政治",       hensachi: 57, hasAO: true  },
+      { name: "経済学部", category: "経済・経営・商", hensachi: 57, hasAO: true  },
+      { name: "文学部",   category: "文・語学・人文", hensachi: 56, hasAO: true  },
+      { name: "理工学部", category: "理・工",         hensachi: 54, hasAO: true  },
+      { name: "情報学部", category: "情報",           hensachi: 55, hasAO: false }
     ]
   },
   {
@@ -620,9 +621,9 @@ const schools = [
     groupRank: 4, group: "中堅私大",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "学芸学部（英文学科）", category: "文・語学・人文", hensachi: 59 },
-      { name: "総合政策学部",         category: "社会・国際",     hensachi: 60 },
-      { name: "情報科学部",           category: "情報",           hensachi: 58 }
+      { name: "学芸学部（英文学科）", category: "文・語学・人文", hensachi: 59, hasAO: true  },
+      { name: "総合政策学部",         category: "社会・国際",     hensachi: 60, hasAO: true  },
+      { name: "情報科学部",           category: "情報",           hensachi: 58, hasAO: false }
     ]
   },
   {
@@ -736,9 +737,9 @@ const schools = [
     groupRank: 4, group: "成成明学・中堅私大",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "経済学部", category: "経済・経営・商", hensachi: 56 },
-      { name: "人文学部", category: "文・語学・人文", hensachi: 56 },
-      { name: "社会学部", category: "社会・国際",     hensachi: 56 }
+      { name: "経済学部", category: "経済・経営・商", hensachi: 56, hasAO: true },
+      { name: "人文学部", category: "文・語学・人文", hensachi: 56, hasAO: true },
+      { name: "社会学部", category: "社会・国際",     hensachi: 56, hasAO: true }
     ]
   }
 ];
