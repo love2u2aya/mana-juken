@@ -563,6 +563,68 @@ input[type="range"] {
   line-height: 1.5;
 }
 
+.ao-detail-block {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.ao-detail-row {
+  display: flex;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+
+.ao-detail-row:last-child {
+  border-bottom: none;
+}
+
+.ao-detail-label {
+  flex-shrink: 0;
+  width: 88px;
+  font-weight: 700;
+  color: var(--text-light);
+  font-size: 11px;
+  padding-top: 2px;
+}
+
+.ao-detail-value {
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.ao-eng-req-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ao-eng-req-list li {
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.ao-eng-req-list li::before {
+  content: "・";
+  color: var(--primary);
+}
+
+.ao-detail-notes {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.6;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
 /* Empty state */
 .empty-state {
   grid-column: 1 / -1;
