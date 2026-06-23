@@ -623,7 +623,7 @@ const schools = [
       { name: "経済学部", category: "経済・経営・商", hensachi: 57, hasAO: true  },
       { name: "文学部",   category: "文・語学・人文", hensachi: 56, hasAO: true  },
       { name: "理工学部", category: "理・工",         hensachi: 54, hasAO: true  },
-      { name: "情報学部", category: "情報",           hensachi: 55, hasAO: false }
+      { name: "経営学部", category: "経済・経営・商", hensachi: 55, hasAO: false }
     ]
   },
   {

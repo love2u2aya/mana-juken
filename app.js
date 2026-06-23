@@ -516,6 +516,643 @@ const FACULTY_DETAILS = {
   },
 };
 
+// Per-faculty exam methods data — key: '${schoolId}_${facultyName}'
+// Each method: { name, category, subjects?, englishReqs?, selectionMethods?, interviewLang?, notes? }
+// category: 'general' | 'english-ext' | 'csat-combined' | 'csat-only' | 'ao' | 'recommendation' | 'other'
+const EXAM_METHODS_DATA = {
+  // ===== 慶應義塾大学 (id:19) =====
+  '19_法学部': [
+    { name: '一般選抜', category: 'general' },
+    { name: 'FIT入試 A方式', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      notes: '学業以外の活動・探究経験等を重視。浪人生も受験可。' },
+    { name: 'FIT入試 B方式', category: 'recommendation',
+      notes: '評定平均4.0以上・現役生対象。合格者はすでに活動・成績で評価されているため推薦者不要。' },
+  ],
+  '19_文学部': [
+    { name: '一般選抜', category: 'general' },
+    { name: '一般選抜（英語外部試験利用）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2500以上', 'IELTS: 可（スコア換算）', 'TEAP（4技能）: 可（スコア換算）'],
+      notes: '英語外部試験スコアで当日英語試験を代替。スコアは取得後2年以内のものが有効。' },
+    { name: '自主応募制推薦（学校推薦型選抜）', category: 'recommendation',
+      notes: '評定平均4.1以上・現役生のみ。総合考査I（小論文＋外国語作文力）＋総合考査II。' },
+  ],
+  '19_経済学部': [
+    { name: '一般選抜 A方式（数学型）', category: 'general', subjects: ['英語', '数学'] },
+    { name: '一般選抜 B方式（地歴型）', category: 'general', subjects: ['英語', '地理歴史'] },
+  ],
+  '19_商学部': [
+    { name: '一般選抜 A方式', category: 'general', subjects: ['英語', '地理歴史', '数学'] },
+    { name: '一般選抜 B方式', category: 'general', subjects: ['英語', '地理歴史', '論文テスト'] },
+  ],
+  '19_理工学部': [
+    { name: '一般選抜', category: 'general' },
+    { name: '分野志向型入試（総合型選抜）', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '電気情報工学科・数理科学科・化学科の3学科のみ対象。1年次から学科所属（学門制非適用）。' },
+  ],
+  '19_医学部': [
+    { name: '一般選抜', category: 'general' },
+  ],
+  '19_総合政策学部': [
+    { name: '一般選抜', category: 'general', subjects: ['小論文', '外国語または数学（選択）'] },
+    { name: 'AO入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '夏・秋入試あり。4月入学・9月入学を選択可。推薦者不要の公募制。' },
+  ],
+  // ===== 早稲田大学 (id:20) =====
+  '20_法学部': [
+    { name: '一般選抜', category: 'general' },
+    { name: '英語4技能テスト利用方式', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2200以上（各技能500以上）', 'TOEFL iBT: 60点以上（各技能14点以上）', 'IELTS: 6.0以上（各技能5.0以上）', 'TEAP: 280点以上（各技能65点以上）'],
+      notes: '英語試験免除。国語・地歴/数学の2科目で合否判定。' },
+    { name: '共通テスト利用方式', category: 'csat-only', notes: '5教科6〜7科目。' },
+    { name: '地域探究・貢献入試', category: 'ao', selectionMethods: ['小論文', '書類審査'],
+      notes: '面接なし。第3次選考に共通テスト240/300点以上が必要。' },
+  ],
+  '20_文学部': [
+    { name: '一般選抜', category: 'general' },
+    { name: '英語4技能テスト利用方式', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2200以上（各技能500以上）', 'TOEFL iBT: 60点以上（各技能14点以上）', 'IELTS: 6.0以上（各技能5.0以上）', 'TEAP: 280点以上（各技能65点以上）'],
+      notes: '英語試験免除。国語・地歴の2科目で合否判定。文化構想学部と同時出願可。' },
+    { name: '地域探究・貢献入試', category: 'ao', selectionMethods: ['小論文', '書類審査'],
+      notes: '面接なし。第3次選考に共通テスト240/300点以上が必要。' },
+  ],
+  '20_文化構想学部': [
+    { name: '一般選抜', category: 'general' },
+    { name: '英語4技能テスト利用方式', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2200以上（各技能500以上）', 'TOEFL iBT: 60点以上（各技能14点以上）', 'IELTS: 6.0以上（各技能5.0以上）', 'TEAP: 280点以上（各技能65点以上）'],
+      notes: '英語試験免除。国語・地歴の2科目で合否判定。文学部と同時出願可。' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '地域探究・貢献入試', category: 'ao', selectionMethods: ['小論文', '書類審査'],
+      notes: '面接なし。第3次選考に共通テスト240/300点以上が必要。' },
+    { name: 'JCulPコース AO入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      interviewLang: '英語',
+      englishReqs: ['TEAP: 309点以上', 'IELTS: 5.5以上', '英検CSEスコア: 2300以上', 'TOEFL iBT: 72点以上'] },
+  ],
+  '20_政治経済学部': [
+    { name: '一般選抜（共通テスト＋独自試験）', category: 'csat-combined',
+      notes: '共通テスト3〜4科目（数IA必須）＋独自「総合問題」（日英両言語長文・記述、120分）。' },
+    { name: '共通テスト単独利用方式', category: 'csat-only' },
+  ],
+  '20_商学部': [
+    { name: '一般選抜', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+  ],
+  '20_教育学部': [
+    { name: '一般選抜 A方式', category: 'general', subjects: ['英語', '国語', '地歴'] },
+    { name: '一般選抜 B方式', category: 'general', subjects: ['英語', '数学', '理科'] },
+    { name: '共通テスト併用方式（C方式）', category: 'csat-combined',
+      notes: '共通テスト6教科8科目（2026年度より情報Ⅰ追加）＋独自個別試験。国公立大志望者向け。' },
+    { name: '地域探究・貢献入試', category: 'ao', selectionMethods: ['小論文', '書類審査'],
+      notes: '面接なし。第3次選考に共通テスト240/300点以上が必要。' },
+  ],
+  '20_国際教養学部': [
+    { name: '一般選抜（共通テスト必須）', category: 'csat-combined',
+      notes: '共通テスト2科目＋独自英語試験＋英語資格加点（英検準1級=14点、1級=20点等）。英語資格は加点のみ（必須ではない）。' },
+    { name: 'AO入試', category: 'ao', selectionMethods: ['学力試験', '書類審査'],
+      englishReqs: ['TOEFL iBT: 任意提出（目安100点以上）', 'IELTS: 任意提出（目安7.0以上）', '英検・GTEC: 任意提出'],
+      notes: '2026年度は面接なし。Critical Writingテスト（英語エッセイ）が中心。英語資格スコアの提出が必要。' },
+  ],
+  '20_理工学部': [
+    { name: '一般選抜', category: 'general' },
+    { name: '指定校推薦', category: 'recommendation' },
+    { name: '特別選抜入学試験（オリンピック等）', category: 'ao',
+      notes: '数学・物理・化学オリンピック等指定大会成績保有者。創造理工建築学科は別途「早稲田建築AO（創成入試）」あり。' },
+  ],
+  // ===== 明治大学 (id:22) — AO方式名を正式名に =====
+  '22_政治経済学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '総合型選抜グローバル型', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      englishReqs: ['英検: 準1級以上', 'TOEFL iBT: 68点以上', 'IELTS: 6.0以上', 'TEAP: 285点以上', 'TOEIC L&R: 950点以上'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '22_文学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦特別入学試験', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      notes: '評定平均3.5以上が出願条件。英語資格不要。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '22_商学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '公募制特別入試（総合型選抜）', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      notes: '共通テスト利用。簿記2級またはTOEICなどの資格か海外留学経験が出願条件の一つ。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '22_理工学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦特別入試', category: 'ao', selectionMethods: ['実技', '面接', '書類審査'],
+      notes: '評定平均3.8以上。口頭試問＋プレゼン形式。英語資格不要。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '22_国際日本学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦特別入試', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      englishReqs: ['英検: 準1級以上', 'TOEFL iBT: 72点以上', 'IELTS: 5.5以上', 'TEAP: 309点以上', 'TOEIC L&R+S&W: 785＋310点以上'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '22_総合数理学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦特別入試', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      notes: '数学または情報系のプレゼンテーション＋口頭試問。英語資格不要。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  // ===== 青山学院大学 (id:23) =====
+  '23_文学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '英米文学科は英語資格必須＋英語面接あり。史学科・比較芸術学科は英語資格不要・日本語面接。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '23_地球社会共生学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '区分A〜Gに分かれ、英語スコア基準が異なる。区分Aは英検準1級相当以上、区分B〜Gは英検2級相当以上。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '23_コミュニティ人間科学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '英語資格不要。地域・社会活動経験やボランティア実績が重視される。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '23_理工学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '理工系女子特別入学者選抜', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      englishReqs: ['英検CSEスコア: 1980以上', 'TOEFL iBT: 42点以上', 'IELTS: 4.0以上', 'TEAP: 225点以上', 'TOEIC L&R+S&W: 550＋240点以上'],
+      notes: '女子のみ対象（2026年度新設）。基礎学力調査（数学・理科）＋面接。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  // ===== 立教大学 (id:24) — 自由選抜入試（全12学部）=====
+  '24_法学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '英語資格スコア提出必須（下限基準なし）。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_経済学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      englishReqs: ['TOEFL iBT: 42点以上', 'IELTS: 4.0以上', '英検CSEスコア: 1950以上', 'TEAP: 225点以上', 'GTEC: 930点以上', 'TOEIC: 1150点以上'],
+      notes: '第2次選考は90分の総合科目試験＋面接。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_経営学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '資格型I（英検CSE 1700以上）と国際経営学科（英検CSE 2300以上）で基準が異なる。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_文学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      notes: '英米文学専修はTOEFL 72/IELTS 5.5/英検CSE 2300以上。他専修はスコア提出必須（下限なし）。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_異文化コミュニケーション学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      interviewLang: '日本語および英語',
+      englishReqs: ['TOEFL iBT: 72点以上', 'IELTS: 5.5以上', '英検CSEスコア: 2300以上', 'TEAP: 309点以上'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_理学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      englishReqs: ['TOEFL iBT: 57点以上', 'IELTS: 4.5以上', '英検CSEスコア: 1950以上', 'TEAP: 267点以上', 'GTEC: 930点以上'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_社会学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      englishReqs: ['TOEFL iBT: 42点以上', 'IELTS: 4.0以上', '英検CSEスコア: 1950以上', 'TEAP: 225点以上'],
+      notes: '自由研究レポートの提出＋小論文＋面接。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_観光学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      englishReqs: ['TOEFL iBT: 42点以上', 'IELTS: 4.0以上', '英検CSEスコア: 1950以上', 'TEAP: 225点以上', 'TOEIC: 1560点以上'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_コミュニティ福祉学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試（資格型III）', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      englishReqs: ['TOEFL iBT: 80点以上', 'IELTS: 6.0以上', '英検CSEスコア: 2400以上', 'TEAP: 332点以上', 'TOEIC: 1660点以上'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_現代心理学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試（資格型V）', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      englishReqs: ['TOEFL iBT: 72点以上', 'IELTS: 5.5以上', '英検CSEスコア: 2300以上', 'TEAP: 309点以上', 'GTEC: 1180点以上'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_スポーツウエルネス学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      englishReqs: ['TOEFL iBT: 57点以上', 'IELTS: 4.5以上', '英検CSEスコア: 2125以上', 'TEAP: 267点以上', 'GTEC: 1065点以上'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '24_環境学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自由選抜入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      englishReqs: ['英検CSEスコア: 2067以上（目安）'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  // ===== 中央大学 (id:25) =====
+  '25_法学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '英語外部試験利用方式（フレックス・プラス英語コース）', category: 'english-ext',
+      englishReqs: ['英検: 1級以上', 'TOEFL iBT: 80点以上', 'IELTS: 6.0以上', 'TEAP: 300点以上', 'TOEIC L&R: 785点以上'],
+      notes: '英語の独自試験が免除。一部英語での口頭試問あり。' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦入試（総合型選抜）', category: 'ao', selectionMethods: ['面接', '書類審査'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '25_経済学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '英語運用能力特別入試（総合型選抜）', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      englishReqs: ['英検CSEスコア: 2200以上', 'TOEFL iBT: 61点以上', 'IELTS: 5.0以上', 'TEAP: 280点以上', 'TOEIC L&R+S&W: 940点以上', 'GTEC: 1050点以上'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '25_文学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦入試（外国語型）', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      englishReqs: ['英検: 準1級以上', 'TOEFL iBT: 57点以上', 'IELTS: 4.5以上', 'TEAP: 270点以上', 'TOEIC: 1410点以上', 'GTEC: 1050点以上'],
+      notes: '外国語型（英語資格必須）と専攻適性型（英語資格不要）の2種類あり。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '25_商学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '英語運用能力特別入試（総合型選抜）', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      englishReqs: ['英検: 準1級以上', 'TOEFL iBT: 68点以上', 'IELTS: 6.0以上', 'TEAP: 280点以上', 'TOEIC: 940点以上', 'GTEC: 1180点以上'],
+      notes: '評定平均4.0以上が出願条件。英語筆記試験あり。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '25_理工学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '自己推薦入試（総合型選抜）', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      notes: '2026年4月より基幹・社会・先進理工学部の3学部に再編。英語資格不要。学科別課題（数学・理科）＋面接。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '25_国際経営学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '英語外部試験利用方式（GLSP）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2304以上', 'TOEFL iBT: 72点以上', 'IELTS: 5.5以上', 'TOEIC L&R+S&W: 785＋310点以上'],
+      notes: '英語の独自試験が免除。スコアを出願資格として利用。' },
+    { name: '共通テスト併用方式', category: 'csat-combined' },
+    { name: '共通テスト利用方式（4教科型）', category: 'csat-only' },
+    { name: '共通テスト利用方式（3教科型）', category: 'csat-only' },
+    { name: '自己推薦入学試験（総合型選抜）', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      interviewLang: '英語および日本語',
+      englishReqs: ['英検CSEスコア: 2304以上', 'TOEFL iBT: 72点以上', 'IELTS: 5.5以上', 'TOEIC L&R+S&W: 785＋310点以上'],
+      notes: '評定平均3.8以上。英語・日本語両方での面接。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '25_国際情報学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  // ===== 法政大学 (id:26) =====
+  '26_国際文化学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: 'Self-Assessment試験（S基準・英語外部試験利用）', category: 'english-ext',
+      englishReqs: ['TOEFL iBT: 90点以上', 'IELTS: 7.0以上'],
+      notes: 'GIS（グローバル教養学院）。英語での面接・プレゼン。高い英語スコアが出願必須条件。' },
+    { name: '総合型選抜 GIS AO（A基準）', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      interviewLang: '英語',
+      notes: 'A基準はスコアの最低基準なし。英語での面接・プレゼン。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '26_情報科学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: 'IT特別選抜（総合型選抜）', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      notes: '数学試験必須。英検2級/GTEC 1000点が望ましい（必須ではない）。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  // ===== 学習院大学 (id:32) =====
+  '32_法学部': [
+    { name: '一般選抜 コア試験', category: 'general' },
+    { name: '一般選抜 プラス試験', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜（指定校・公募制）', category: 'recommendation' },
+  ],
+  '32_経済学部': [
+    { name: '一般選抜 コア試験', category: 'general' },
+    { name: '一般選抜 プラス試験', category: 'general' },
+    { name: '共通テスト利用方式（4または6科目型）', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '32_文学部': [
+    { name: '一般選抜 コア試験', category: 'general' },
+    { name: '一般選抜 プラス試験', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '32_理学部': [
+    { name: '一般選抜 コア試験', category: 'general' },
+    { name: '一般選抜 プラス試験（化学科・数学科・生命科学科：英語筆記あり）', category: 'general' },
+    { name: '一般選抜 プラス試験（物理学科：英語外部試験利用）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 1800以上', 'TOEFL iBT: 32点以上', 'IELTS: 4.0以上', 'TEAP: 210点以上', 'TOEIC L&R+S&W: 500点以上', 'GTEC: 990点以上'],
+      notes: '物理学科のみ。英語外部試験スコアが出願資格として必要（英語筆記なし）。数学・理科の2科目で審査。' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜（公募制）', category: 'recommendation' },
+  ],
+  '32_国際社会科学部': [
+    { name: '一般選抜 コア試験', category: 'general' },
+    { name: '一般選抜 プラス試験（英語スコア換算）', category: 'english-ext',
+      englishReqs: ['英検CSE 2630（1級）→最高換算点', '英検CSE 2310（2級）→120点換算', 'TOEFL iBT 100点→最高換算', 'IELTS 7.0→最高換算', 'TEAP 390点→最高換算', 'GTEC 1370点→最高換算', 'TOEIC L&R+S&W 1300点→最高換算'],
+      notes: '英語外部試験スコアを点数換算して採用（国語・地歴/数学の2科目で判定）。' },
+    { name: '共通テスト利用方式（4科目型）', category: 'csat-only' },
+    { name: '総合型選抜（AO）', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      interviewLang: '英語',
+      englishReqs: ['英検CSEスコア: 2304以上（準1級相当）', 'TOEFL iBT: 62点以上', 'IELTS: 5.5以上', 'TEAP: 310点以上', 'TEAP CBT: 550点以上', 'TOEIC L&R+S&W: 910点以上', 'GTEC: 1220点以上'] },
+    { name: '学校推薦型選抜（公募制）', category: 'recommendation' },
+  ],
+  // ===== 成蹊大学 (id:40) =====
+  '40_法学部': [
+    { name: '一般選抜（A方式・3教科）', category: 'general' },
+    { name: '全学部統一入試（E方式・英語外部試験換算可）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2300以上で換算開始（2600で満点換算）', 'TOEFL iBT: 換算あり', 'TEAP（4技能）: 換算あり', 'TOEIC L&R: 換算あり', 'GTEC（4技能）: 換算あり', '※IELTSは利用不可'],
+      notes: '英語外部試験スコアと当日英語試験の高い方を採用。英語外部試験スコアは任意。' },
+    { name: '共通テスト利用方式（C方式）', category: 'csat-only' },
+    { name: '共通テスト+独自試験（P方式）', category: 'csat-combined',
+      notes: '共通テスト5科目＋独自試験1科目。国公立大との併願向け。' },
+    { name: 'AOマルデス入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '英語スコア提出必須だが最低点の基準なし。資料読解＋グループ討論＋面接。' },
+    { name: '指定校推薦', category: 'recommendation' },
+  ],
+  '40_経済学部': [
+    { name: '一般選抜（A方式・3教科）', category: 'general' },
+    { name: '全学部統一入試（E方式・英語外部試験換算可）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2300以上で換算開始', 'TOEFL iBT: 換算あり', 'TEAP（4技能）: 換算あり', 'TOEIC L&R: 換算あり', 'GTEC（4技能）: 換算あり', '※IELTSは利用不可'] },
+    { name: '共通テスト利用方式（C方式）', category: 'csat-only' },
+    { name: '共通テスト+独自試験（P方式）', category: 'csat-combined',
+      notes: '共通テスト5科目＋独自試験1科目。' },
+    { name: 'AOマルデス入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '英語スコア提出必須。課題提出＋プレゼンテーション＋面接。' },
+    { name: '指定校推薦', category: 'recommendation' },
+  ],
+  '40_文学部': [
+    { name: '一般選抜（A方式・3教科）', category: 'general' },
+    { name: '全学部統一入試（E方式・英語外部試験換算可）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2300以上で換算開始', 'TOEFL iBT: 換算あり', 'TEAP（4技能）: 換算あり', 'TOEIC L&R: 換算あり', 'GTEC（4技能）: 換算あり', '※IELTSは利用不可'] },
+    { name: '共通テスト利用方式（C方式）', category: 'csat-only' },
+    { name: '共通テスト+独自試験（P方式）', category: 'csat-combined',
+      notes: '共通テスト5科目＋独自試験1科目。' },
+    { name: 'AOマルデス入試', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'],
+      notes: '英語スコア提出必須（国際文化学科は英検2級/TOEFL 52/TOEIC 560の基準あり）。英米文学科は英語プレゼンあり。' },
+    { name: '指定校推薦', category: 'recommendation' },
+  ],
+  '40_理工学部': [
+    { name: '一般選抜（A方式・3教科）', category: 'general' },
+    { name: '全学部統一入試（E方式・英語外部試験換算可）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2300以上で換算開始', 'TOEFL iBT: 換算あり', 'TEAP（4技能）: 換算あり', 'TOEIC L&R: 換算あり', 'GTEC（4技能）: 換算あり', '※IELTSは利用不可'] },
+    { name: '共通テスト利用方式（C方式）', category: 'csat-only' },
+    { name: '共通テスト利用（S方式・4教科6科目・奨学金付）', category: 'csat-only',
+      notes: '数学200点＋理科2科目400点＋地歴公民情報から1科目＋国語または英語200点。' },
+    { name: 'AOマルデス入試', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      notes: '英語スコア提出必須（最低基準なし）。思考力審査（90分数学演習）＋面接。' },
+    { name: '指定校推薦', category: 'recommendation' },
+  ],
+  '40_経営学部': [
+    { name: '一般選抜（A方式・3教科）', category: 'general' },
+    { name: '全学部統一入試（E方式・英語外部試験換算可）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2300以上で換算開始', 'TOEFL iBT: 換算あり', 'TEAP（4技能）: 換算あり', 'TOEIC L&R: 換算あり', 'GTEC（4技能）: 換算あり', '※IELTSは利用不可'] },
+    { name: '共通テスト利用方式（C方式）', category: 'csat-only' },
+    { name: '共通テスト+独自試験（P方式）', category: 'csat-combined',
+      notes: '共通テスト5科目＋独自試験1科目。' },
+    { name: 'AOマルデス入試', category: 'ao', selectionMethods: ['面接', '書類審査'],
+      notes: '英語スコア提出必須（最低基準なし）。課題提出＋グループ討論＋面接。' },
+    { name: '指定校推薦', category: 'recommendation' },
+  ],
+  // ===== 法政大学 (id:26) — 残り5学部 =====
+  '26_法学部': [
+    { name: 'T日程（全学部統一入試・1月）', category: 'general' },
+    { name: 'A方式（学部別一般：2月）', category: 'general' },
+    { name: '英語外部試験利用入試（準1級グループ）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 2304以上（準1級相当）', 'TOEFL iBT: 72点以上', 'IELTS: 5.5以上', 'TEAP（4技能）: 309点以上', 'TEAP CBT: 600点以上'],
+      notes: '英語の得点を外部試験スコアに置き換えて合否判定。国語・地歴/政経で審査。' },
+    { name: '共通テスト利用方式（B方式・C方式）', category: 'csat-only' },
+    { name: 'スポーツ推薦・各種AO（総合型選抜）', category: 'ao', selectionMethods: ['面接', '書類審査'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '26_経営学部': [
+    { name: 'T日程（全学部統一入試・1月）', category: 'general' },
+    { name: 'A方式（学部別一般：2月）', category: 'general' },
+    { name: '英語外部試験利用入試（2級グループ）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 1950以上（2級相当）', 'TOEFL iBT: 42点以上', 'IELTS: 4.0以上', 'TEAP（4技能）: 225点以上', 'TEAP CBT: 350点以上'],
+      notes: '英語の得点を外部試験スコアに置き換えて合否判定。' },
+    { name: '共通テスト利用方式（B方式・C方式）', category: 'csat-only' },
+    { name: '総合型選抜（AO）', category: 'ao', selectionMethods: ['面接', '書類審査'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '26_文学部': [
+    { name: 'T日程（全学部統一入試・1月）', category: 'general' },
+    { name: 'A方式（学部別一般：2月）', category: 'general' },
+    { name: '英語外部試験利用入試（英文学科・現代文化学科は準1級、他学科は2級グループ）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 1950〜2304以上（学科により異なる）', 'TOEFL iBT: 42〜72点以上（学科により異なる）', 'IELTS: 4.0〜5.5以上（学科により異なる）', 'TEAP（4技能）: 225〜309点以上（学科により異なる）'],
+      notes: '英文学科・現代文化学科は準1級グループ（CSE 2304以上）。哲学科等は2級グループ（CSE 1950以上）。' },
+    { name: '共通テスト利用方式（B方式・C方式）', category: 'csat-only' },
+    { name: '総合型選抜（AO）', category: 'ao', selectionMethods: ['小論文', '面接', '書類審査'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '26_社会学部': [
+    { name: 'T日程（全学部統一入試・1月）', category: 'general' },
+    { name: 'A方式（学部別一般：2月）', category: 'general' },
+    { name: '英語外部試験利用入試（2級グループ）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 1950以上（2級相当）', 'TOEFL iBT: 42点以上', 'IELTS: 4.0以上', 'TEAP（4技能）: 225点以上', 'TEAP CBT: 350点以上'] },
+    { name: '共通テスト利用方式（B方式・C方式）', category: 'csat-only' },
+    { name: '総合型選抜（AO）', category: 'ao', selectionMethods: ['面接', '書類審査'] },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '26_理工学部': [
+    { name: 'T日程（全学部統一入試・1月）', category: 'general' },
+    { name: 'A方式（学部別一般：2月）', category: 'general' },
+    { name: '英語外部試験利用入試（2級グループ）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 1950以上（2級相当）', 'TOEFL iBT: 42点以上', 'IELTS: 4.0以上', 'TEAP（4技能）: 225点以上', 'TEAP CBT: 350点以上'] },
+    { name: '共通テスト利用方式（B方式・C方式）', category: 'csat-only' },
+    { name: '総合型選抜（AO）', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      notes: '数学・理科の基礎学力審査＋面接。英語資格提出は任意。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  // ===== 明治大学 (id:22) — 残り4学部 =====
+  '22_法学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '22_経営学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '22_農学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '農学部特別入試（総合型選抜）', category: 'ao', selectionMethods: ['学力試験', '面接', '書類審査'],
+      notes: '評定平均4.0以上。農業・自然・食の探究活動や資格・実績を重視。' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '22_情報コミュニケーション学部': [
+    { name: '一般選抜（学部別）', category: 'general' },
+    { name: '全学部統一入試', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  // ===== 青山学院大学 (id:23) — hasAO:false の7学部 =====
+  '23_法学部': [
+    { name: '個別学部日程 A方式（3科目）', category: 'general' },
+    { name: '個別学部日程 B方式（独自2科目＋共テ英語）', category: 'csat-combined',
+      notes: '独自試験（国語・地歴/公民）＋共通テスト英語の3科目合算。' },
+    { name: '全学部日程', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '23_経済学部': [
+    { name: '個別学部日程 A方式（3科目）', category: 'general' },
+    { name: '個別学部日程 B方式（3科目）', category: 'general' },
+    { name: '全学部日程', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '23_経営学部': [
+    { name: '個別学部日程 A方式（3科目）', category: 'general' },
+    { name: '個別学部日程 B方式（独自2科目＋共テ英語）', category: 'csat-combined',
+      notes: '独自試験（英語・国語）＋共通テスト地歴/公民の3科目合算。英語重視型。' },
+    { name: '全学部日程', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '23_国際政治経済学部': [
+    { name: '個別学部日程（英語重視3科目）', category: 'general',
+      notes: '英語200点・国語150点・地歴100点の配点。英語の比重が大きい。' },
+    { name: '全学部日程', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '23_社会情報学部': [
+    { name: '全学部日程 A方式（文系型・英語+国語+地歴）', category: 'general' },
+    { name: '全学部日程 B方式（理系型・英語+数学+理科）', category: 'general' },
+    { name: '共通テスト利用方式（文系型・理系型）', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '23_教育人間科学部': [
+    { name: '個別学部日程 B方式（英語外部試験利用）', category: 'english-ext',
+      englishReqs: ['英検CSEスコア: 1980以上（2級相当）', 'TOEFL iBT: 42点以上', 'IELTS: 4.0以上', 'TEAP（4技能）: 225点以上', 'GTEC（4技能）: 960点以上'],
+      notes: '英語外部試験スコアを活用して英語試験を免除または換算。国語・地歴の2科目で審査。' },
+    { name: '全学部日程 A方式', category: 'general' },
+    { name: '全学部日程 B方式', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+  '23_総合文化政策学部': [
+    { name: '個別学部日程（3科目・英語重視）', category: 'general',
+      notes: '英語200点・国語150点・地歴/数学100点。英語の配点が高い。' },
+    { name: '全学部日程', category: 'general' },
+    { name: '共通テスト利用方式', category: 'csat-only' },
+    { name: '学校推薦型選抜', category: 'recommendation' },
+  ],
+};
+
+const METHOD_CATEGORY_LABELS = {
+  'general':        '一般入試',
+  'english-ext':    '英語外部',
+  'csat-combined':  '共テ併用',
+  'csat-only':      '共テ利用',
+  'ao':             '総合型選抜',
+  'recommendation': '推薦入試',
+  'other':          'その他',
+};
+
+const METHOD_CATEGORY_CSS = {
+  'general':        'cat-general',
+  'english-ext':    'cat-english-ext',
+  'csat-combined':  'cat-csat',
+  'csat-only':      'cat-csat',
+  'ao':             'cat-ao',
+  'recommendation': 'cat-suisen',
+  'other':          'cat-other',
+};
+
+let viewMode = 'faculty'; // 'faculty' | 'method'
+
+function getExamMethods(school, faculty) {
+  const key = `${school.id}_${faculty.name}`;
+  if (EXAM_METHODS_DATA[key]) return EXAM_METHODS_DATA[key];
+  const methods = [];
+  if (school.type === '国公立') {
+    methods.push({ name: '一般選抜', category: 'general' });
+    methods.push({ name: '共通テスト（2次試験との組み合わせ）', category: 'csat-combined' });
+  } else {
+    methods.push({ name: '一般選抜（学部別）', category: 'general' });
+    methods.push({ name: '全学部統一入試', category: 'general' });
+    methods.push({ name: '共通テスト利用方式', category: 'csat-only' });
+  }
+  const hasAO = faculty.hasAO !== undefined ? faculty.hasAO : school.hasAO;
+  if (hasAO) methods.push({ name: '総合型選抜（AO入試）', category: 'ao' });
+  if (school.hasRecommendation) methods.push({ name: '学校推薦型選抜', category: 'recommendation' });
+  return methods;
+}
+
 function getAOMethods(school, faculty) {
   const key = `${school.id}_${faculty.name}`;
   if (AO_METHODS_OVERRIDE[key]) return AO_METHODS_OVERRIDE[key];
@@ -663,6 +1300,20 @@ function initFilters() {
   document.getElementById('sort-select').addEventListener('change', applyFilters);
   document.getElementById('reset-btn').addEventListener('click', resetFilters);
 
+  document.getElementById('view-btn-faculty').addEventListener('click', () => {
+    viewMode = 'faculty';
+    document.getElementById('view-btn-faculty').classList.add('active');
+    document.getElementById('view-btn-method').classList.remove('active');
+    applyFilters();
+  });
+
+  document.getElementById('view-btn-method').addEventListener('click', () => {
+    viewMode = 'method';
+    document.getElementById('view-btn-method').classList.add('active');
+    document.getElementById('view-btn-faculty').classList.remove('active');
+    applyFilters();
+  });
+
   const toggleBtn = document.getElementById('filter-toggle-btn');
   const sidebar   = document.getElementById('sidebar');
   const overlay   = document.getElementById('overlay');
@@ -695,9 +1346,59 @@ function resetFilters() {
   applyFilters();
 }
 
-function applyFilters() {
-  const results = [];
+function sortResults(arr, sortVal) {
+  if      (sortVal === 'hensachi-desc') arr.sort((a, b) => b.faculty.hensachi - a.faculty.hensachi);
+  else if (sortVal === 'hensachi-asc')  arr.sort((a, b) => a.faculty.hensachi - b.faculty.hensachi);
+  else if (sortVal === 'name')          arr.sort((a, b) => a.school.name.localeCompare(b.school.name, 'ja'));
+}
 
+function applyFilters() {
+  const sortVal = document.getElementById('sort-select').value;
+
+  if (viewMode === 'method') {
+    const methodResults = [];
+    schools.forEach(school => {
+      if (filters.types.length   && !filters.types.includes(school.type))     return;
+      if (filters.regions.length && !filters.regions.includes(school.region)) return;
+      if (school.groupRank > filters.maxRank)                                  return;
+      if (filters.noMath        && !school.mathOptional)                       return;
+      if (filters.englishStrong && !school.englishEmphasis)                    return;
+      school.faculties.forEach(faculty => {
+        if (faculty.hensachi < filters.hensachiMin || faculty.hensachi > filters.hensachiMax) return;
+        if (filters.categories.length && !filters.categories.includes(faculty.category)) return;
+        const facultyHasAO = faculty.hasAO !== undefined ? faculty.hasAO : school.hasAO;
+        const methods = getExamMethods(school, faculty);
+        methods.forEach(method => {
+          const cat = method.category;
+          const isGeneral = ['general', 'english-ext', 'csat-combined', 'csat-only'].includes(cat);
+          const isAO      = cat === 'ao';
+          const isSuisen  = cat === 'recommendation';
+          const anyTypeFilter = filters.hasGeneral || filters.hasAO || filters.hasSuisen;
+          if (anyTypeFilter) {
+            const passes = (filters.hasGeneral && isGeneral) ||
+                           (filters.hasAO      && isAO)     ||
+                           (filters.hasSuisen  && isSuisen);
+            if (!passes) return;
+          }
+          if (filters.aoMethods.length) {
+            if (!isAO) return;
+            const sel = method.selectionMethods || getAOMethods(school, faculty);
+            if (!filters.aoMethods.some(m => sel.includes(m))) return;
+          }
+          methodResults.push({ school, faculty, facultyHasAO, method });
+        });
+      });
+    });
+    sortResults(methodResults, sortVal);
+    currentResults = methodResults;
+    renderMethods(methodResults);
+    updateCount(methodResults.length);
+    updateActiveTags();
+    return;
+  }
+
+  // Faculty mode
+  const results = [];
   schools.forEach(school => {
     if (filters.types.length   && !filters.types.includes(school.type))     return;
     if (filters.regions.length && !filters.regions.includes(school.region)) return;
@@ -706,7 +1407,6 @@ function applyFilters() {
     if (filters.englishStrong && !school.englishEmphasis)                    return;
     if (filters.hasGeneral    && school.hasGeneral === false)                 return;
     if (filters.hasSuisen     && !school.hasRecommendation)                  return;
-
     school.faculties.forEach(faculty => {
       if (faculty.hensachi < filters.hensachiMin || faculty.hensachi > filters.hensachiMax) return;
       if (filters.categories.length && !filters.categories.includes(faculty.category))       return;
@@ -720,12 +1420,7 @@ function applyFilters() {
       results.push({ school, faculty, facultyHasAO });
     });
   });
-
-  const sortVal = document.getElementById('sort-select').value;
-  if      (sortVal === 'hensachi-desc') results.sort((a, b) => b.faculty.hensachi - a.faculty.hensachi);
-  else if (sortVal === 'hensachi-asc')  results.sort((a, b) => a.faculty.hensachi - b.faculty.hensachi);
-  else if (sortVal === 'name')          results.sort((a, b) => a.school.name.localeCompare(b.school.name, 'ja'));
-
+  sortResults(results, sortVal);
   currentResults = results;
   renderFaculties(results);
   updateCount(results.length);
@@ -784,7 +1479,57 @@ function renderFaculties(results) {
   }).join('');
 }
 
-function openModal(schoolId, facultyName) {
+function renderMethods(results) {
+  const grid = document.getElementById('school-grid');
+  if (results.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <p>条件に合う入試方式が見つかりませんでした</p>
+        <small>絞り込み条件を変えてみてください</small>
+      </div>`;
+    return;
+  }
+  grid.innerHTML = results.map(({ school: s, faculty: f, method: m }) => {
+    const typeClass  = s.type === '国公立' ? 'kokuritu' : 'shiritsu';
+    const catLabel   = METHOD_CATEGORY_LABELS[m.category] || m.category;
+    const catCss     = METHOD_CATEGORY_CSS[m.category]    || 'cat-other';
+    return `
+      <div class="school-card">
+        <div class="card-top">
+          <div class="card-name-group">
+            <span class="method-name-label">${escHtml(m.name)}</span>
+            <span class="faculty-name">${escHtml(f.name)}</span>
+            <span class="university-name">${escHtml(s.name)}</span>
+          </div>
+          <span class="method-cat-badge ${catCss}">${escHtml(catLabel)}</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-location">${escHtml(s.prefecture)}（${escHtml(s.region)}）</span>
+          <span class="group-badge">${escHtml(s.group)}</span>
+          <span class="meta-hensachi">
+            <span class="meta-hensachi-label">偏差値</span>
+            <span class="meta-hensachi-value">${f.hensachi}</span>
+          </span>
+        </div>
+        <div class="card-footer">
+          <div class="card-categories">
+            <span class="cat-tag">${escHtml(f.category)}</span>
+            <span class="type-badge ${typeClass}">${escHtml(s.type)}</span>
+          </div>
+          <button class="detail-btn"
+            data-school-id="${s.id}"
+            data-faculty-name="${escHtml(f.name)}"
+            data-method-name="${escHtml(m.name)}">詳細を見る</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function openModal(schoolId, facultyName, methodName) {
+  if (viewMode === 'method' && methodName) {
+    openMethodModal(schoolId, facultyName, methodName);
+    return;
+  }
   const item = currentResults.find(r => r.school.id === schoolId && r.faculty.name === facultyName);
   if (!item) return;
   const { school, faculty, facultyHasAO } = item;
@@ -842,13 +1587,101 @@ function openModal(schoolId, facultyName) {
   document.getElementById('detail-modal').classList.add('open');
 }
 
+function openMethodModal(schoolId, facultyName, methodName) {
+  const item = currentResults.find(r =>
+    r.school.id === schoolId &&
+    r.faculty.name === facultyName &&
+    r.method && r.method.name === methodName
+  );
+  if (!item) return;
+  const { school, faculty, method } = item;
+  const catLabel = METHOD_CATEGORY_LABELS[method.category] || method.category;
+  const catCss   = METHOD_CATEGORY_CSS[method.category]    || 'cat-other';
+  const details  = FACULTY_DETAILS[`${school.id}_${faculty.name}`] || null;
+
+  let sectionsHTML = '';
+
+  // General/CSAT: show subjects
+  const isGeneralType = ['general', 'english-ext', 'csat-combined', 'csat-only'].includes(method.category);
+  if (isGeneralType) {
+    const subjects = method.subjects || getGeneralSubjects(faculty, school);
+    const subjectHTML = subjects.map(s => `<span class="subject-tag">${escHtml(s)}</span>`).join('');
+    let note = '';
+    if (method.category === 'csat-combined') note = '<p class="modal-note">大学入学共通テスト＋大学独自の2次試験を組み合わせた方式です</p>';
+    if (method.category === 'csat-only')     note = '<p class="modal-note">大学入学共通テストのスコアのみで合否を判定する方式です</p>';
+    sectionsHTML += `<div class="modal-section"><h4 class="modal-section-title">受験科目目安</h4><div class="subject-tags">${subjectHTML}</div>${note}</div>`;
+  }
+
+  // English requirements (for english-ext methods or method with englishReqs)
+  if (method.englishReqs && method.englishReqs.length > 0) {
+    sectionsHTML += `
+      <div class="modal-section">
+        <h4 class="modal-section-title">英語外部試験の条件</h4>
+        <div class="ao-detail-block">
+          <div class="ao-detail-row">
+            <span class="ao-detail-label">スコア要件</span>
+            <ul class="ao-eng-req-list">${method.englishReqs.map(r => `<li>${escHtml(r)}</li>`).join('')}</ul>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // AO details
+  if (method.category === 'ao') {
+    const selMethods = method.selectionMethods || getAOMethods(school, faculty);
+    const aoHTML = selMethods.map(m => `<span class="ao-method-tag">${escHtml(m)}</span>`).join('');
+    let aoDetailBlock = '';
+    if (details) {
+      const interviewLang = method.interviewLang || details.aoInterviewLang;
+      const langHTML = interviewLang
+        ? `<div class="ao-detail-row"><span class="ao-detail-label">面接言語</span><span class="ao-detail-value">${escHtml(interviewLang)}</span></div>`
+        : '';
+      const engReqs = (method.englishReqs && method.englishReqs.length) ? method.englishReqs : (details.aoEnglishReqs || []);
+      const engHTML = engReqs.length
+        ? `<div class="ao-detail-row"><span class="ao-detail-label">英語資格条件</span><ul class="ao-eng-req-list">${engReqs.map(r => `<li>${escHtml(r)}</li>`).join('')}</ul></div>`
+        : '';
+      const notesText = method.notes || details.aoNotes;
+      const notesHTML = notesText ? `<div class="ao-detail-notes">${escHtml(notesText)}</div>` : '';
+      if (langHTML || engHTML || notesHTML) aoDetailBlock = `<div class="ao-detail-block">${langHTML}${engHTML}${notesHTML}</div>`;
+    }
+    sectionsHTML += `
+      <div class="modal-section">
+        <h4 class="modal-section-title">AO入試（総合型選抜）の選考内容</h4>
+        <div class="ao-method-tags">${aoHTML}</div>
+        ${aoDetailBlock}
+      </div>`;
+  }
+
+  // Notes for non-AO methods
+  if (method.notes && method.category !== 'ao') {
+    sectionsHTML += `<div class="modal-section"><p class="modal-note">${escHtml(method.notes)}</p></div>`;
+  }
+
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-header">
+      <div class="modal-name-group">
+        <span class="method-name-label modal-method-name">${escHtml(method.name)}</span>
+        <span class="modal-faculty-name">${escHtml(faculty.name)}</span>
+        <span class="modal-univ-name">${escHtml(school.name)}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <span class="method-cat-badge ${catCss}">${escHtml(catLabel)}</span>
+        <span class="modal-hensachi">偏差値 <strong>${faculty.hensachi}</strong></span>
+      </div>
+    </div>
+    ${sectionsHTML}
+    <p class="modal-note">※詳細・日程は各大学の募集要項でご確認ください</p>
+  `;
+  document.getElementById('detail-modal').classList.add('open');
+}
+
 function closeModal() {
   document.getElementById('detail-modal').classList.remove('open');
 }
 
 function updateCount(n) {
-  document.getElementById('result-count').innerHTML =
-    `<strong>${n}</strong> 件の学部が見つかりました`;
+  const unit = viewMode === 'method' ? '件の入試方式' : '件の学部';
+  document.getElementById('result-count').innerHTML = `<strong>${n}</strong> ${unit}が見つかりました`;
 }
 
 function updateActiveTags() {
@@ -951,6 +1784,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('school-grid').addEventListener('click', e => {
     const btn = e.target.closest('.detail-btn');
     if (!btn) return;
-    openModal(parseInt(btn.dataset.schoolId), btn.dataset.facultyName);
+    openModal(parseInt(btn.dataset.schoolId), btn.dataset.facultyName, btn.dataset.methodName || null);
   });
 });
