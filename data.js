@@ -368,13 +368,17 @@ const schools = [
     groupRank: 3, group: "GMARCH",
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: true,
     faculties: [
-      { name: "法学部",           category: "法・政治",       hensachi: 62, hasAO: true  },
-      { name: "経営学部",         category: "経済・経営・商", hensachi: 63, hasAO: true  },
-      { name: "文学部",           category: "文・語学・人文", hensachi: 62, hasAO: true  },
-      { name: "国際政治経済学部", category: "社会・国際",     hensachi: 65, hasAO: true  },
-      { name: "理工学部",         category: "理・工",         hensachi: 59, hasAO: true  },
-      { name: "地球社会共生学部", category: "社会・国際",     hensachi: 62, hasAO: true  },
-      { name: "情報テクノロジー学部", category: "情報",       hensachi: 60, hasAO: false }
+      { name: "法学部",                   category: "法・政治",       hensachi: 62, hasAO: true  },
+      { name: "経済学部",                 category: "経済・経営・商", hensachi: 60, hasAO: false },
+      { name: "経営学部",                 category: "経済・経営・商", hensachi: 63, hasAO: true  },
+      { name: "文学部",                   category: "文・語学・人文", hensachi: 62, hasAO: true  },
+      { name: "国際政治経済学部",         category: "社会・国際",     hensachi: 65, hasAO: true  },
+      { name: "理工学部",                 category: "理・工",         hensachi: 59, hasAO: true  },
+      { name: "社会情報学部",             category: "情報",           hensachi: 59, hasAO: true  },
+      { name: "地球社会共生学部",         category: "社会・国際",     hensachi: 62, hasAO: true  },
+      { name: "教育人間科学部",           category: "教育",           hensachi: 59, hasAO: true  },
+      { name: "コミュニティ人間科学部",   category: "社会・国際",     hensachi: 57, hasAO: true  },
+      { name: "総合文化政策学部",         category: "社会・国際",     hensachi: 61, hasAO: true  }
     ]
   },
   {
