@@ -610,7 +610,8 @@ const schools = [
     hasAO: true, hasRecommendation: true, mathOptional: true, englishEmphasis: false,
     faculties: [
       { name: "農学部",   category: "農・生命", hensachi: 51, hasAO: true },
-      { name: "生命科学部", category: "農・生命", hensachi: 49, hasAO: true }
+      { name: "生命科学部", category: "農・生命", hensachi: 49, hasAO: true },
+      { name: "国際食料情報学部", category: "社会・国際", hensachi: 50, hasAO: true }
     ]
   },
   {
@@ -751,6 +752,29 @@ const schools = [
       { name: "経済学部", category: "経済・経営・商", hensachi: 56, hasAO: true },
       { name: "人文学部", category: "文・語学・人文", hensachi: 56, hasAO: true },
       { name: "社会学部", category: "社会・国際",     hensachi: 56, hasAO: true }
+    ]
+  },
+  {
+    id: 51, name: "東京外国語大学", type: "国公立",
+    prefecture: "東京都", region: "関東",
+    groupRank: 2, group: "難関国公立",
+    hasAO: false, hasRecommendation: false, mathOptional: false, englishEmphasis: true,
+    faculties: [
+      { name: "世界言語社会学部", category: "文・語学・人文", hensachi: 65 },
+      { name: "国際日本学部",     category: "社会・国際",     hensachi: 65 }
+    ]
+  },
+  {
+    id: 52, name: "横浜市立大学", type: "国公立",
+    prefecture: "神奈川県", region: "関東",
+    groupRank: 3, group: "中堅国公立",
+    hasAO: false, hasRecommendation: true, mathOptional: false, englishEmphasis: true,
+    faculties: [
+      { name: "国際教養学部",       category: "社会・国際",       hensachi: 60 },
+      { name: "国際商学部",         category: "経済・経営・商",   hensachi: 60 },
+      { name: "理学部",             category: "理・工",           hensachi: 57 },
+      { name: "データサイエンス学部", category: "情報",           hensachi: 58 },
+      { name: "医学部",             category: "医・薬・歯・看護", hensachi: 68 }
     ]
   }
 ];
